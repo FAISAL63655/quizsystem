@@ -17,10 +17,12 @@ COPY . .
 
 # Next.js collects completely anonymous telemetry data about general usage.
 ENV NEXT_TELEMETRY_DISABLED 1
+ENV NODE_ENV production
 ENV SKIP_ESLINT 1
+ENV DISABLE_ESLINT_PLUGIN true
 
 # Build the application
-RUN NODE_ENV=production npm run build
+RUN npm run build
 
 # Production image, copy all the files and run next
 FROM base AS runner

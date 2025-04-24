@@ -1,0 +1,212 @@
+@import "tailwindcss";
+
+:root {
+  /* ألوان مستوحاة من هوية وزارة التعليم */
+  --background: #F9FAFB;
+  --foreground: #000000;
+  --primary-color: #007B5E;
+  --primary-hover: #006A50;
+  --secondary-color: #38BDF8;
+  --secondary-hover: #0EA5E9;
+  --accent-color: #38BDF8;
+  --error-color: #EF4444;
+  --success-color: #22C55E;
+  --warning-color: #FACC15;
+  --border-color: #E2E8F0;
+  --text-secondary: #64748B;
+  --input-bg: #FFFFFF;
+  --card-bg: #F1F5F9;
+  --shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  --radius: 8px;
+}
+
+:root {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-noto-sans-arabic), var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+/* إلغاء الوضع الداكن لتجنب المشاكل */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #F9FAFB;
+    --foreground: #000000;
+    --primary-color: #007B5E;
+    --primary-hover: #006A50;
+    --secondary-color: #38BDF8;
+    --secondary-hover: #0EA5E9;
+    --accent-color: #38BDF8;
+    --error-color: #EF4444;
+    --success-color: #22C55E;
+    --warning-color: #FACC15;
+    --border-color: #E2E8F0;
+    --text-secondary: #64748B;
+    --input-bg: #FFFFFF;
+    --card-bg: #F1F5F9;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  }
+}
+
+/* تصميم بسيط وسلس */
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-noto-sans-arabic), 'Noto Sans Arabic', Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+/* تنسيق عناصر الإدخال */
+input, textarea, select, button {
+  font-family: var(--font-noto-sans-arabic), 'Noto Sans Arabic', Arial, sans-serif;
+  background-color: var(--input-bg);
+  color: var(--foreground);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  padding: 0.5rem 1rem;
+  transition: all 0.2s ease;
+}
+
+input:focus, textarea:focus, select:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(43, 108, 238, 0.2);
+}
+
+/* تنسيق العناوين */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-noto-sans-arabic), 'Noto Sans Arabic', Arial, sans-serif;
+  font-weight: 700;
+  color: var(--primary-color);
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.025em;
+}
+
+h1 {
+  font-size: 2.25rem;
+  line-height: 2.5rem;
+}
+
+/* إصلاح اتجاه النص العربي */
+.rtl-fix, [dir="rtl"] {
+  direction: rtl;
+  text-align: right;
+}
+
+/* تحسين وضوح النصوص */
+* {
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* تنسيق الأزرار */
+.btn, button, [type='button'], [type='submit'] {
+  background-color: var(--primary-color);
+  color: white;
+  font-weight: 600;
+  border: none;
+  border-radius: var(--radius);
+  padding: 0.75rem 1.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.btn:hover, button:hover, [type='button']:hover, [type='submit']:hover {
+  background-color: var(--primary-hover);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transform: translateY(-1px);
+}
+
+.btn:active, button:active, [type='button']:active, [type='submit']:active {
+  transform: translateY(1px);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+/* تنسيق البطاقات */
+.card {
+  background-color: var(--card-bg);
+  border-radius: var(--radius);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* تنسيق الجداول */
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  color: var(--foreground);
+}
+
+th, td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+th {
+  font-weight: 700;
+  background-color: var(--input-bg);
+}
+
+/* تنسيق النصوص */
+p {
+  margin-bottom: 1rem;
+  color: var(--foreground);
+}
+
+a {
+  color: var(--primary-color);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+a:hover {
+  color: var(--primary-hover);
+}
+
+/* تنسيق الألوان الرمادية */
+.text-gray-400, .text-gray-500, .text-gray-600, .text-gray-700 {
+  color: var(--secondary-color) !important;
+}
+
+/* تنسيق الحاويات */
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+/* تنسيق الرسائل */
+.alert {
+  padding: 1rem;
+  border-radius: var(--radius);
+  margin-bottom: 1rem;
+}
+
+.alert-error {
+  background-color: rgba(220, 53, 69, 0.1);
+  color: var(--error-color);
+  border: 1px solid var(--error-color);
+}
+
+.alert-success {
+  background-color: rgba(40, 167, 69, 0.1);
+  color: var(--success-color);
+  border: 1px solid var(--success-color);
+}
+
+

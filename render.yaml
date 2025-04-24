@@ -1,19 +1,11 @@
 services:
   - type: web
     name: quizsystem
-    env: node
-    nodeVersion: 18.x
-    buildCommand: npm ci && NODE_ENV=production NEXT_TELEMETRY_DISABLED=1 SKIP_ESLINT=true npm run build
-    startCommand: NODE_ENV=production NEXT_TELEMETRY_DISABLED=1 npm run start
+    env: docker
+    dockerfilePath: ./Dockerfile
     envVars:
       - key: NEXT_PUBLIC_SUPABASE_URL
         value: https://aimzresxqchycswspxnj.supabase.co
       - key: NEXT_PUBLIC_SUPABASE_ANON_KEY
         value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFpbXpyZXN4cWNoeWNzd3NweG5qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDU0OTczNTcsImV4cCI6MjA2MTA3MzM1N30.SeC3DrDrMTN0-jg5OZTbRmVb_4ecIgvThZlcfqedvOE
-      - key: NODE_ENV
-        value: production
-      - key: NEXT_TELEMETRY_DISABLED
-        value: 1
-      - key: SKIP_ESLINT
-        value: true
     autoDeploy: true

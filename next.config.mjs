@@ -10,6 +10,9 @@ const nextConfig = {
   swcMinify: true,
   poweredByHeader: false,
   reactStrictMode: false,
+  experimental: {
+    outputFileTracingRoot: process.env.NODE_ENV === 'production' ? '/app' : undefined,
+  },
   async headers() {
     return [
       {

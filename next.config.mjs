@@ -7,6 +7,9 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
+  swcMinify: true,
+  poweredByHeader: false,
+  reactStrictMode: false,
   async headers() {
     return [
       {

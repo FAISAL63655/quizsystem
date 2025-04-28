@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: quizsystem
+    name: tqb
     env: docker
     dockerfilePath: ./Dockerfile
     envVars:

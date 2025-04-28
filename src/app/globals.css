@@ -1,14 +1,14 @@
 @import "tailwindcss";
 
 :root {
-  /* ألوان مستوحاة من هوية وزارة التعليم */
+  /* ألوان مستوحاة من شعار الجمعية الخيرية لتحفيظ القرآن الكريم */
   --background: #F9FAFB;
   --foreground: #000000;
-  --primary-color: #007B5E;
-  --primary-hover: #006A50;
-  --secondary-color: #38BDF8;
-  --secondary-hover: #0EA5E9;
-  --accent-color: #38BDF8;
+  --primary-color: #1A2B5F;
+  --primary-hover: #152348;
+  --secondary-color: #3AA9D9;
+  --secondary-hover: #2D8AB0;
+  --accent-color: #3AA9D9;
   --error-color: #EF4444;
   --success-color: #22C55E;
   --warning-color: #FACC15;
@@ -32,11 +32,11 @@
   :root {
     --background: #F9FAFB;
     --foreground: #000000;
-    --primary-color: #007B5E;
-    --primary-hover: #006A50;
-    --secondary-color: #38BDF8;
-    --secondary-hover: #0EA5E9;
-    --accent-color: #38BDF8;
+    --primary-color: #1A2B5F;
+    --primary-hover: #152348;
+    --secondary-color: #3AA9D9;
+    --secondary-hover: #2D8AB0;
+    --accent-color: #3AA9D9;
     --error-color: #EF4444;
     --success-color: #22C55E;
     --warning-color: #FACC15;
@@ -72,7 +72,7 @@ input, textarea, select, button {
 input:focus, textarea:focus, select:focus {
   outline: none;
   border-color: var(--primary-color);
-  box-shadow: 0 0 0 2px rgba(43, 108, 238, 0.2);
+  box-shadow: 0 0 0 2px rgba(26, 43, 95, 0.2);
 }
 
 /* تنسيق العناوين */
@@ -174,7 +174,7 @@ a {
 }
 
 a:hover {
-  color: var(--primary-hover);
+  color: var(--secondary-color);
 }
 
 /* تنسيق الألوان الرمادية */

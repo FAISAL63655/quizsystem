@@ -21,8 +21,8 @@ const notoSansArabic = Noto_Sans_Arabic({
 });
 
 export const metadata: Metadata = {
-  title: "مسابقات المدرسة الإلكترونية",
-  description: "منصة مسابقات تفاعلية للطلاب",
+  title: "اختبار رخصة معلم",
+  description: "منصة اختبارات تفاعلية للمعلمين",
 };
 
 export default function RootLayout({

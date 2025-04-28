@@ -132,8 +132,8 @@ export default function QuizPage({ params }: { params: { quizId: string } }) {
 
       setHasSubmitted(true);
 
-      // Redirect to leaderboard
-      router.push(`/quizzes/${quizId}/leaderboard`);
+      // Redirect to quizzes page
+      router.push('/student/quizzes');
     } catch (err: any) {
       setError(err.message);
     } finally {
@@ -157,13 +157,13 @@ export default function QuizPage({ params }: { params: { quizId: string } }) {
   if (hasSubmitted) {
     return (
       <div dir="rtl" className="min-h-screen bg-gray-50">
-        <Header title="نظام الاختبارات" showLogout={true} onLogout={handleLogout} />
+        <Header title="اختبار رخصة معلم" showLogout={true} onLogout={handleLogout} />
         <div className="container mx-auto px-4 py-12">
           <Card className="p-8 text-center">
             <h1 className="text-2xl font-bold mb-4">تم تقديم الاختبار مسبقاً</h1>
             <p className="mb-6">لقد قمت بتقديم هذا الاختبار بالفعل.</p>
-            <Button onClick={() => router.push(`/quizzes/${quizId}/leaderboard`)}>
-              عرض لوحة المتصدرين
+            <Button onClick={() => router.push('/student/quizzes')}>
+              العودة إلى الاختبارات
             </Button>
           </Card>
         </div>
@@ -174,7 +174,7 @@ export default function QuizPage({ params }: { params: { quizId: string } }) {
   if (!quiz || questions.length === 0) {
     return (
       <div dir="rtl" className="min-h-screen bg-gray-50">
-        <Header title="نظام الاختبارات" showLogout={true} onLogout={handleLogout} />
+        <Header title="اختبار رخصة معلم" showLogout={true} onLogout={handleLogout} />
         <div className="container mx-auto px-4 py-12">
           <Card className="p-8 text-center">
             <h1 className="text-2xl font-bold mb-4">الاختبار غير موجود</h1>
@@ -192,7 +192,7 @@ export default function QuizPage({ params }: { params: { quizId: string } }) {
 
   return (
     <div dir="rtl" className="min-h-screen bg-gray-50">
-      <Header title="نظام الاختبارات - الاختبار" showLogout={true} onLogout={handleLogout} />
+      <Header title="اختبار رخصة معلم - الاختبار" showLogout={true} onLogout={handleLogout} />
 
       <div className="container mx-auto px-4 py-8">
         <div className="mb-8">
@@ -230,8 +230,17 @@ export default function QuizPage({ params }: { params: { quizId: string } }) {
           <p className="text-lg mb-6">{currentQuestion.question_text}</p>
 
           <div className="space-y-4">
-            {['A', 'B', 'C', 'D'].map((option) => {
-              const optionText = currentQuestion[`option_${option.toLowerCase()}` as keyof Question] as string;
+            {['A', 'B', 'C', 'D'].map((option, index) => {
+              // تحويل الحروف اللاتينية إلى عربية
+              const arabicOptions = ['أ', 'ب', 'ج', 'د'];
+              const arabicOption = arabicOptions[index];
+
+              // الحصول على نص الخيار
+              const optionText = currentQuestion[`option_${option.toLowerCase()}` as keyof Question] as string | null;
+
+              // إذا كان الخيار غير موجود (null أو فارغ)، لا تعرضه
+              if (!optionText) return null;
+
               const isSelected = selectedOptions[currentQuestion.id] === option;
 
               return (
@@ -246,7 +255,7 @@ export default function QuizPage({ params }: { params: { quizId: string } }) {
                     <div className={`w-6 h-6 flex items-center justify-center rounded-full ml-3 ${
                       isSelected ? 'bg-blue-500 text-white' : 'bg-gray-200'
                     }`}>
-                      {option}
+                      {arabicOption}
                     </div>
                     <span>{optionText}</span>
                   </div>

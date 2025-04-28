@@ -32,7 +32,7 @@ export default function StudentsPage() {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || 'فشل في جلب بيانات الطلاب');
+        throw new Error(data.error || 'فشل في جلب بيانات المعلمين');
       }
 
       setStudents(data.students);
@@ -40,6 +40,29 @@ export default function StudentsPage() {
       setError(err.message);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleDeleteStudent = async (studentId: string) => {
+    if (!confirm('هل أنت متأكد من رغبتك في حذف هذا المعلم؟')) {
+      return;
+    }
+
+    try {
+      const response = await fetch(`/api/students/${studentId}`, {
+        method: 'DELETE',
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'فشل في حذف المعلم');
+      }
+
+      // Refresh students list
+      fetchStudents();
+    } catch (err: any) {
+      setError(err.message);
     }
   };
 
@@ -59,17 +82,22 @@ export default function StudentsPage() {
   return (
     <div dir="rtl" className="min-h-screen bg-gray-50">
       <Header
-        title="نظام الاختبارات - إدارة الطلاب"
+        title="اختبار رخصة معلم - إدارة المعلمين"
         showLogout={true}
         onLogout={handleLogout}
       />
 
       <div className="container mx-auto px-4 py-8">
         <div className="flex justify-between items-center mb-8">
-          <h1 className="text-2xl font-bold">إدارة الطلاب</h1>
-          <Link href="/admin/students/import">
-            <Button>استيراد بيانات الطلاب</Button>
-          </Link>
+          <h1 className="text-2xl font-bold">إدارة المعلمين</h1>
+          <div className="flex gap-4">
+            <Link href="/admin/students/add">
+              <Button>إضافة معلم جديد</Button>
+            </Link>
+            <Link href="/admin/students/import">
+              <Button variant="secondary">استيراد بيانات المعلمين</Button>
+            </Link>
+          </div>
         </div>
 
         {error && (
@@ -80,10 +108,15 @@ export default function StudentsPage() {
 
         {students.length === 0 ? (
           <Card className="p-6 text-center">
-            <p className="text-gray-600 mb-4">لم يتم تسجيل أي طلاب حتى الآن.</p>
-            <Link href="/admin/students/import">
-              <Button>استيراد بيانات الطلاب</Button>
-            </Link>
+            <p className="text-gray-600 mb-4">لم يتم تسجيل أي معلمين حتى الآن.</p>
+            <div className="flex gap-4 justify-center">
+              <Link href="/admin/students/add">
+                <Button>إضافة معلم جديد</Button>
+              </Link>
+              <Link href="/admin/students/import">
+                <Button variant="secondary">استيراد بيانات المعلمين</Button>
+              </Link>
+            </div>
           </Card>
         ) : (
           <Card className="p-6">
@@ -99,6 +132,9 @@ export default function StudentsPage() {
                     </th>
                     <th scope="col" className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
                       تاريخ التسجيل
+                    </th>
+                    <th scope="col" className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      الإجراءات
                     </th>
                   </tr>
                 </thead>
@@ -118,6 +154,21 @@ export default function StudentsPage() {
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="text-sm text-gray-500">
                           {new Date(student.created_at).toLocaleDateString('ar-SA')}
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="flex gap-2">
+                          <Link href={`/admin/students/${student.id}/edit`}>
+                            <Button variant="secondary" className="text-xs py-1.5 px-3">
+                              تعديل
+                            </Button>
+                          </Link>
+                          <button
+                            onClick={() => handleDeleteStudent(student.id)}
+                            className="text-xs py-1.5 px-3 bg-[#EF4444] text-white rounded-md hover:bg-[#DC2626] transition-colors"
+                          >
+                            حذف
+                          </button>
                         </div>
                       </td>
                     </tr>

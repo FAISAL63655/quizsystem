@@ -62,7 +62,7 @@ export default function StudentQuizzes() {
   return (
     <div dir="rtl" className="min-h-screen bg-gray-50">
       <Header
-        title="نظام الاختبارات - صفحة الطالب"
+        title="اختبار رخصة معلم - صفحة المتدرب"
         showLogout={true}
         onLogout={handleLogout}
       />
@@ -95,12 +95,9 @@ export default function StudentQuizzes() {
                 {quiz.description && (
                   <p className="text-gray-600 mb-4">{quiz.description}</p>
                 )}
-                <div className="flex justify-between items-center mt-4">
+                <div className="flex justify-start items-center mt-4">
                   <Link href={`/student/quizzes/${quiz.id}`}>
                     <Button>بدء الاختبار</Button>
-                  </Link>
-                  <Link href={`/quizzes/${quiz.id}/leaderboard`} className="text-blue-600 hover:underline">
-                    عرض لوحة المتصدرين
                   </Link>
                 </div>
               </Card>

@@ -62,9 +62,4 @@ export interface Admin {
   updated_at: string;
 }
 
-export interface LeaderboardEntry {
-  student_id: string;
-  full_name: string;
-  total_points: number;
-  rank: number;
-}
+

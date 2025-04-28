@@ -27,21 +27,66 @@ export async function GET() {
   }
 }
 
-// Import students from CSV
+// Import students from CSV or add a single student
 export async function POST(request: NextRequest) {
   try {
+    const contentType = request.headers.get('content-type') || '';
+
+    // Handle JSON request (single student)
+    if (contentType.includes('application/json')) {
+      const { full_name, national_id } = await request.json();
+
+      if (!full_name || !national_id) {
+        return NextResponse.json(
+          { error: 'الاسم الكامل ورقم الهوية مطلوبان' },
+          { status: 400 }
+        );
+      }
+
+      // Check if national ID already exists
+      const { data: existingStudent } = await supabase
+        .from('students')
+        .select('id')
+        .eq('national_id', national_id)
+        .single();
+
+      if (existingStudent) {
+        return NextResponse.json(
+          { error: 'رقم الهوية الوطنية مستخدم بالفعل' },
+          { status: 400 }
+        );
+      }
+
+      // Insert new student
+      const { data: newStudent, error } = await supabase
+        .from('students')
+        .insert([{ full_name, national_id }])
+        .select()
+        .single();
+
+      if (error) {
+        return NextResponse.json(
+          { error: 'خطأ في إضافة المعلم' },
+          { status: 500 }
+        );
+      }
+
+      return NextResponse.json({ student: newStudent }, { status: 201 });
+    }
+
+    // Handle form data (CSV import)
     const formData = await request.formData();
     const file = formData.get('file') as File;
 
     if (!file) {
       return NextResponse.json(
-        { error: 'CSV file is required' },
+        { error: 'ملف CSV مطلوب' },
         { status: 400 }
       );
     }
 
     const csvText = await file.text();
-    
+
     // Parse CSV
     const { data, errors } = parse(csvText, {
       header: true,
@@ -57,7 +102,7 @@ export async function POST(request: NextRequest) {
 
     // Validate CSV structure
     const requiredColumns = ['full_name', 'national_id'];
-    const hasRequiredColumns = requiredColumns.every(column => 
+    const hasRequiredColumns = requiredColumns.every(column =>
       Object.keys(data[0]).includes(column)
     );
 
@@ -76,7 +121,7 @@ export async function POST(request: NextRequest) {
 
     const { data: insertedStudents, error } = await supabase
       .from('students')
-      .upsert(students, { 
+      .upsert(students, {
         onConflict: 'national_id',
         ignoreDuplicates: false
       })
@@ -89,7 +134,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    return NextResponse.json({ 
+    return NextResponse.json({
       message: `Successfully imported ${insertedStudents.length} students`,
       students: insertedStudents
     }, { status: 201 });

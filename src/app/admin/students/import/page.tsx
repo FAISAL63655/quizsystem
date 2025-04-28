@@ -57,10 +57,10 @@ export default function ImportStudents() {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || 'فشل في استيراد بيانات الطلاب');
+        throw new Error(data.error || 'فشل في استيراد بيانات المعلمين');
       }
 
-      setSuccess(data.message || 'تم استيراد بيانات الطلاب بنجاح');
+      setSuccess(data.message || 'تم استيراد بيانات المعلمين بنجاح');
       setFile(null);
 
       // Reset file input
@@ -82,16 +82,16 @@ export default function ImportStudents() {
   return (
     <div dir="rtl" className="min-h-screen bg-gray-50">
       <Header
-        title="نظام الاختبارات - استيراد الطلاب"
+        title="اختبار رخصة معلم - استيراد المعلمين"
         showLogout={true}
         onLogout={handleLogout}
       />
 
       <div className="container mx-auto px-4 py-8">
         <div className="mb-8">
-          <h1 className="text-2xl font-bold">استيراد بيانات الطلاب</h1>
+          <h1 className="text-2xl font-bold">استيراد بيانات المعلمين</h1>
           <p className="text-gray-600 mt-2">
-            قم برفع ملف CSV يحتوي على معلومات الطلاب. يجب أن يتضمن الملف أعمدة للاسم الكامل (full_name) ورقم الهوية الوطنية (national_id).
+            قم برفع ملف CSV يحتوي على معلومات المعلمين. يجب أن يتضمن الملف أعمدة للاسم الكامل (full_name) ورقم الهوية الوطنية (national_id).
           </p>
         </div>
 
@@ -145,7 +145,7 @@ export default function ImportStudents() {
                 <Button variant="secondary">إلغاء</Button>
               </Link>
               <Button type="submit" disabled={loading || !file}>
-                {loading ? 'جاري الاستيراد...' : 'استيراد الطلاب'}
+                {loading ? 'جاري الاستيراد...' : 'استيراد المعلمين'}
               </Button>
             </div>
           </form>
@@ -161,14 +161,14 @@ export default function ImportStudents() {
               <pre className="text-sm">
                 full_name,national_id
                 محمد أحمد,1234567890
-                فاطمة علي,0987654321
+                خالد علي,0987654321
                 ...
               </pre>
             </div>
             <ul className="list-disc list-inside mt-4 text-sm text-gray-600">
               <li>يجب أن يحتوي الصف الأول على رؤوس الأعمدة</li>
-              <li>full_name: الاسم الكامل للطالب</li>
-              <li>national_id: رقم الهوية الوطنية للطالب (يجب أن يكون فريدًا)</li>
+              <li>full_name: الاسم الكامل للمعلم</li>
+              <li>national_id: رقم الهوية الوطنية للمعلم (يجب أن يكون فريدًا)</li>
               <li>تأكد من عدم وجود مسافات إضافية أو أحرف خاصة</li>
             </ul>
           </Card>

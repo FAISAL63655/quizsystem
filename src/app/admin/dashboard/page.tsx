@@ -118,17 +118,17 @@ export default function AdminDashboard() {
   return (
     <div dir="rtl" className="min-h-screen bg-[#F9FAFB]" style={{ color: '#000000' }}>
       <Header
-        title="مسابقات المدرسة الإلكترونية - لوحة التحكم"
+        title="اختبار رخصة معلم - لوحة التحكم"
         showLogout={true}
         onLogout={handleLogout}
       />
 
       <div className="container mx-auto px-4 py-4">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
-          <h1 className="text-3xl font-bold text-[#007B5E]">لوحة التحكم الرئيسية</h1>
+          <h1 className="text-3xl font-bold text-[#1A2B5F]">لوحة التحكم الرئيسية</h1>
           <div className="bg-white px-4 py-2 rounded-lg shadow-sm border border-[#E2E8F0]">
             <p className="text-[#000000] font-medium">
-              مرحباً، <span className="font-bold text-[#007B5E]">{admin?.username}</span>
+              مرحباً، <span className="font-bold text-[#1A2B5F]">{admin?.username}</span>
             </p>
           </div>
         </div>
@@ -141,19 +141,19 @@ export default function AdminDashboard() {
         )}
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-8">
-          <Card className="p-6 border-t-4 border-t-[#007B5E] shadow-sm hover:shadow-md transition-shadow" style={{ color: '#000000' }}>
-            <h2 className="text-xl font-bold mb-4 text-[#007B5E]">الاختبارات</h2>
+          <Card className="p-6 border-t-4 border-t-[#1A2B5F] shadow-sm hover:shadow-md transition-shadow" style={{ color: '#000000' }}>
+            <h2 className="text-xl font-bold mb-4 text-[#1A2B5F]">الاختبارات</h2>
             <p className="text-4xl font-bold mb-6 text-[#000000]" style={{ color: '#000000 !important' }}>{quizzes.length}</p>
             <Link href="/admin/quizzes/create">
               <Button className="w-full py-3">إنشاء اختبار جديد</Button>
             </Link>
           </Card>
 
-          <Card className="p-6 border-t-4 border-t-[#38BDF8] shadow-sm hover:shadow-md transition-shadow">
-            <h2 className="text-xl font-bold mb-4 text-[#38BDF8]">الطلاب</h2>
+          <Card className="p-6 border-t-4 border-t-[#3AA9D9] shadow-sm hover:shadow-md transition-shadow">
+            <h2 className="text-xl font-bold mb-4 text-[#3AA9D9]">المعلمين</h2>
             <p className="text-4xl font-bold mb-6 text-[#000000]">{studentsCount}</p>
             <Link href="/admin/students">
-              <Button className="w-full py-3">إدارة الطلاب</Button>
+              <Button className="w-full py-3">إدارة المعلمين</Button>
             </Link>
           </Card>
 
@@ -161,7 +161,7 @@ export default function AdminDashboard() {
             <h2 className="text-xl font-bold mb-4 text-[#64748B]">إجراءات سريعة</h2>
             <div className="space-y-3 mt-6">
               <Link href="/admin/students/import">
-                <Button variant="secondary" className="w-full py-3">استيراد بيانات الطلاب</Button>
+                <Button variant="secondary" className="w-full py-3">استيراد بيانات المعلمين</Button>
               </Link>
               <Link href="/admin/quizzes/create">
                 <Button variant="secondary" className="w-full py-3">إنشاء اختبار</Button>
@@ -234,9 +234,9 @@ export default function AdminDashboard() {
                               الأسئلة
                             </Button>
                           </Link>
-                          <Link href={`/quizzes/${quiz.id}/leaderboard`}>
+                          <Link href={`/admin/quizzes/${quiz.id}/results`}>
                             <Button variant="secondary" className="text-xs py-1.5 px-3">
-                              المتصدرين
+                              النتائج
                             </Button>
                           </Link>
                           <button

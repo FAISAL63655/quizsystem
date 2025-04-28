@@ -8,7 +8,7 @@ import Input from '@/components/Input';
 import Button from '@/components/Button';
 import Header from '@/components/Header';
 
-export default function StudentLogin() {
+export default function AddStudentPage() {
   const router = useRouter();
   const [fullName, setFullName] = useState('');
   const [nationalId, setNationalId] = useState('');
@@ -21,7 +21,7 @@ export default function StudentLogin() {
     setLoading(true);
 
     try {
-      const response = await fetch('/api/auth/student', {
+      const response = await fetch('/api/students', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -32,14 +32,11 @@ export default function StudentLogin() {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || 'Failed to login');
+        throw new Error(data.error || 'فشل في إضافة المعلم');
       }
 
-      // Store student info in localStorage
-      localStorage.setItem('student', JSON.stringify(data.student));
-
-      // Redirect to quizzes page
-      router.push('/student/quizzes');
+      // Redirect to students page
+      router.push('/admin/students');
     } catch (err: any) {
       setError(err.message);
     } finally {
@@ -47,23 +44,27 @@ export default function StudentLogin() {
     }
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem('admin');
+    router.push('/');
+  };
+
   return (
     <div dir="rtl" className="min-h-screen bg-gray-50">
-      <Header title="اختبار رخصة معلم" />
+      <Header
+        title="اختبار رخصة معلم - إضافة معلم جديد"
+        showLogout={true}
+        onLogout={handleLogout}
+      />
 
-      <div className="container mx-auto px-4 py-12">
+      <div className="container mx-auto px-4 py-8">
         <div className="max-w-md mx-auto">
           <Card className="p-8">
-            <h1 className="text-2xl font-bold mb-6 text-center">تسجيل دخول المعلم</h1>
+            <h1 className="text-2xl font-bold mb-6 text-center">إضافة معلم جديد</h1>
 
             {error && (
               <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
-                {error === 'Failed to login' ? 'فشل تسجيل الدخول' :
-                 error === 'National ID does not match the provided name' ? 'رقم الهوية لا يتطابق مع الاسم المقدم' :
-                 error === 'Error checking student information' ? 'خطأ في التحقق من معلومات الطالب' :
-                 error === 'Error creating student account' ? 'خطأ في إنشاء حساب الطالب' :
-                 error === 'Internal server error' ? 'خطأ في الخادم الداخلي' :
-                 error}
+                {error}
               </div>
             )}
 
@@ -73,7 +74,7 @@ export default function StudentLogin() {
                 label="الاسم الكامل"
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
-                placeholder="أدخل اسمك الكامل"
+                placeholder="أدخل اسم المعلم الكامل"
                 required
               />
 
@@ -86,20 +87,22 @@ export default function StudentLogin() {
                 required
               />
 
-              <Button
-                type="submit"
-                className="w-full mt-4"
-                disabled={loading}
-              >
-                {loading ? 'جاري تسجيل الدخول...' : 'تسجيل الدخول'}
-              </Button>
+              <div className="flex gap-4 mt-6">
+                <Button
+                  type="submit"
+                  className="flex-1"
+                  disabled={loading}
+                >
+                  {loading ? 'جاري الإضافة...' : 'إضافة المعلم'}
+                </Button>
+                
+                <Link href="/admin/students">
+                  <Button variant="secondary" className="flex-1">
+                    إلغاء
+                  </Button>
+                </Link>
+              </div>
             </form>
-
-            <div className="mt-6 text-center">
-              <Link href="/" className="text-[#1A2B5F] hover:underline">
-                العودة إلى الصفحة الرئيسية
-              </Link>
-            </div>
           </Card>
         </div>
       </div>

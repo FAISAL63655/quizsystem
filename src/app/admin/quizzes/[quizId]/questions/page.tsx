@@ -169,7 +169,7 @@ export default function QuizQuestions({ params }: { params: { quizId: string } }
   if (!quiz) {
     return (
       <div dir="rtl" className="min-h-screen bg-gray-50">
-        <Header title="نظام الاختبارات" showLogout={true} onLogout={handleLogout} />
+        <Header title="اختبار رخصة معلم" showLogout={true} onLogout={handleLogout} />
         <div className="container mx-auto px-4 py-12">
           <Card className="p-8 text-center">
             <h1 className="text-2xl font-bold mb-4">الاختبار غير موجود</h1>
@@ -186,7 +186,7 @@ export default function QuizQuestions({ params }: { params: { quizId: string } }
   return (
     <div dir="rtl" className="min-h-screen bg-gray-50">
       <Header
-        title="نظام الاختبارات - إدارة الأسئلة"
+        title="اختبار رخصة معلم - إدارة الأسئلة"
         showLogout={true}
         onLogout={handleLogout}
       />
@@ -402,8 +402,8 @@ export default function QuizQuestions({ params }: { params: { quizId: string } }
           </Link>
 
           {questions.length > 0 && (
-            <Link href={`/quizzes/${quizId}/leaderboard`}>
-              <Button>عرض لوحة المتصدرين</Button>
+            <Link href={`/admin/quizzes/${quizId}/results`}>
+              <Button>عرض نتائج الاختبار</Button>
             </Link>
           )}
         </div>

@@ -52,12 +52,12 @@ export default function AdminLogin() {
 
   return (
     <div dir="rtl" className="min-h-screen bg-gray-50">
-      <Header title="مسابقات المدرسة الإلكترونية" />
+      <Header title="اختبار رخصة معلم" />
 
       <div className="container mx-auto px-4 py-12">
         <div className="max-w-md mx-auto">
           <Card className="p-8">
-            <h1 className="text-2xl font-bold mb-6 text-center">تسجيل دخول المشرف</h1>
+            <h1 className="text-2xl font-bold mb-6 text-center">تسجيل دخول الإدارة</h1>
 
             {error && (
               <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
@@ -98,7 +98,7 @@ export default function AdminLogin() {
             </form>
 
             <div className="mt-6 text-center">
-              <Link href="/" className="text-blue-600 hover:underline">
+              <Link href="/" className="text-[#1A2B5F] hover:underline">
                 العودة إلى الصفحة الرئيسية
               </Link>
             </div>

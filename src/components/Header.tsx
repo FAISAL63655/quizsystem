@@ -9,7 +9,7 @@ interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = ({ title, showLogout = false, onLogout }) => {
   return (
-    <header className="bg-[#007B5E] text-white shadow-md">
+    <header className="bg-[#1A2B5F] text-white shadow-md">
       <div className="container mx-auto flex justify-between items-center py-3 px-4">
         <Link href="/" className="text-xl font-bold hover:opacity-90 transition-opacity">
           {title}
@@ -17,7 +17,7 @@ const Header: React.FC<HeaderProps> = ({ title, showLogout = false, onLogout }) 
         {showLogout && onLogout && (
           <button
             onClick={onLogout}
-            className="px-4 py-2 bg-white text-[#007B5E] rounded-md hover:bg-gray-100 transition-colors font-medium"
+            className="px-4 py-2 bg-white text-[#1A2B5F] rounded-md hover:bg-gray-100 transition-colors font-medium"
           >
             تسجيل الخروج
           </button>

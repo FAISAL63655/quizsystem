@@ -133,7 +133,7 @@ export default function EditQuestion({ params }: { params: { quizId: string; que
   if (!question) {
     return (
       <div dir="rtl" className="min-h-screen bg-gray-50">
-        <Header title="نظام الاختبارات" showLogout={true} onLogout={handleLogout} />
+        <Header title="اختبار رخصة معلم" showLogout={true} onLogout={handleLogout} />
         <div className="container mx-auto px-4 py-12">
           <Card className="p-8 text-center">
             <h1 className="text-2xl font-bold mb-4">السؤال غير موجود</h1>
@@ -150,7 +150,7 @@ export default function EditQuestion({ params }: { params: { quizId: string; que
   return (
     <div dir="rtl" className="min-h-screen bg-gray-50">
       <Header
-        title="نظام الاختبارات - تعديل السؤال"
+        title="اختبار رخصة معلم - تعديل السؤال"
         showLogout={true}
         onLogout={handleLogout}
       />

@@ -51,12 +51,12 @@ export default function AdminLogin() {
   };
 
   return (
-    <div dir="rtl" className="min-h-screen bg-gray-50">
+    <div dir="rtl" className="min-h-screen bg-gray-50 flex flex-col">
       <Header title="اختبار رخصة معلم" />
 
-      <div className="container mx-auto px-4 py-12">
-        <div className="max-w-md mx-auto">
-          <Card className="p-8">
+      <div className="flex-1 flex items-center justify-center">
+        <div className="w-full max-w-md px-4">
+          <Card className="p-8 shadow-lg">
             <h1 className="text-2xl font-bold mb-6 text-center">تسجيل دخول الإدارة</h1>
 
             {error && (

@@ -103,10 +103,22 @@ export default function QuizPage({ params }: { params: { quizId: string } }) {
     }
   };
 
+  // التحقق من إجابة جميع الأسئلة
+  const areAllQuestionsAnswered = () => {
+    return questions.every(question => selectedOptions[question.id]);
+  };
+
   const handleSubmitQuiz = async () => {
     if (!student) return;
 
+    // التحقق من إجابة جميع الأسئلة قبل التقديم
+    if (!areAllQuestionsAnswered()) {
+      setError('يجب الإجابة على جميع الأسئلة قبل تقديم الاختبار');
+      return;
+    }
+
     setSubmitting(true);
+    setError(''); // مسح أي رسائل خطأ سابقة
 
     try {
       const response = await fetch(`/api/quizzes/${quizId}/submit`, {
@@ -191,7 +203,7 @@ export default function QuizPage({ params }: { params: { quizId: string } }) {
   const currentQuestion = questions[currentQuestionIndex];
 
   return (
-    <div dir="rtl" className="min-h-screen bg-gray-50">
+    <div dir="rtl" className="min-h-screen bg-gradient-to-b from-[#F9FAFB] to-[#EDF2F7]">
       <Header title="اختبار رخصة معلم - الاختبار" showLogout={true} onLogout={handleLogout} />
 
       <div className="container mx-auto px-4 py-8">
@@ -221,13 +233,18 @@ export default function QuizPage({ params }: { params: { quizId: string } }) {
           </div>
         )}
 
-        <Card className="p-6 mb-6">
+        <Card className="p-6 mb-6 border-r-4 border-[#1A2B5F] shadow-md transition-all">
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl font-bold">السؤال {currentQuestionIndex + 1} من {questions.length}</h2>
-            <span className="text-sm text-gray-500">النقاط: {currentQuestion.points}</span>
+            <h2 className="text-xl font-bold text-[#1A2B5F] flex items-center">
+              <span className="bg-[#1A2B5F] text-white rounded-full w-8 h-8 flex items-center justify-center ml-2">
+                {currentQuestionIndex + 1}
+              </span>
+              <span>السؤال {currentQuestionIndex + 1} من {questions.length}</span>
+            </h2>
+            <span className="text-sm bg-[#1A2B5F] text-white px-3 py-1 rounded-full">النقاط: {currentQuestion.points}</span>
           </div>
 
-          <p className="text-lg mb-6">{currentQuestion.question_text}</p>
+          <p className="text-lg mb-6 bg-gray-50 p-4 rounded-lg border-r-2 border-[#1A2B5F]">{currentQuestion.question_text}</p>
 
           <div className="space-y-4">
             {['A', 'B', 'C', 'D'].map((option, index) => {
@@ -246,18 +263,20 @@ export default function QuizPage({ params }: { params: { quizId: string } }) {
               return (
                 <div
                   key={option}
-                  className={`p-4 border rounded-md cursor-pointer transition-colors ${
-                    isSelected ? 'bg-blue-100 border-blue-500' : 'hover:bg-gray-100'
+                  className={`p-4 border rounded-lg cursor-pointer transition-all ${
+                    isSelected
+                      ? 'bg-[#E6F7FF] border-[#1A2B5F] shadow-md transform scale-[1.02]'
+                      : 'hover:bg-gray-50 hover:border-gray-300'
                   }`}
                   onClick={() => handleOptionSelect(currentQuestion.id, option)}
                 >
                   <div className="flex items-center">
-                    <div className={`w-6 h-6 flex items-center justify-center rounded-full ml-3 ${
-                      isSelected ? 'bg-blue-500 text-white' : 'bg-gray-200'
+                    <div className={`w-8 h-8 flex items-center justify-center rounded-full ml-3 ${
+                      isSelected ? 'bg-[#1A2B5F] text-white font-bold' : 'bg-gray-200 text-gray-700'
                     }`}>
                       {arabicOption}
                     </div>
-                    <span>{optionText}</span>
+                    <span className={isSelected ? 'font-medium' : ''}>{optionText}</span>
                   </div>
                 </div>
               );
@@ -275,12 +294,21 @@ export default function QuizPage({ params }: { params: { quizId: string } }) {
           </Button>
 
           {currentQuestionIndex === questions.length - 1 ? (
-            <Button
-              onClick={handleSubmitQuiz}
-              disabled={submitting}
-            >
-              {submitting ? 'جاري التقديم...' : 'تقديم الاختبار'}
-            </Button>
+            <div>
+              {!areAllQuestionsAnswered() && (
+                <p className="text-red-500 text-sm mb-2">
+                  <span className="inline-block ml-1">⚠️</span>
+                  يجب الإجابة على جميع الأسئلة قبل تقديم الاختبار
+                </p>
+              )}
+              <Button
+                onClick={handleSubmitQuiz}
+                disabled={submitting}
+                className={!areAllQuestionsAnswered() ? 'opacity-70' : ''}
+              >
+                {submitting ? 'جاري التقديم...' : 'تقديم الاختبار'}
+              </Button>
+            </div>
           ) : (
             <Button onClick={handleNextQuestion}>
               التالي
@@ -288,17 +316,33 @@ export default function QuizPage({ params }: { params: { quizId: string } }) {
           )}
         </div>
 
-        <div className="mt-8 flex justify-center">
-          <div className="flex gap-2">
+        <div className="mt-8">
+          <div className="flex justify-center mb-4">
+            <div className="flex items-center gap-4">
+              <div className="flex items-center">
+                <div className="w-4 h-4 bg-yellow-100 border border-yellow-300 rounded-sm ml-1"></div>
+                <span className="text-sm text-gray-600">لم تتم الإجابة</span>
+              </div>
+              <div className="flex items-center">
+                <div className="w-4 h-4 bg-green-500 rounded-sm ml-1"></div>
+                <span className="text-sm text-gray-600">تمت الإجابة</span>
+              </div>
+              <div className="flex items-center">
+                <div className="w-4 h-4 bg-[#1A2B5F] rounded-sm ml-1"></div>
+                <span className="text-sm text-gray-600">السؤال الحالي</span>
+              </div>
+            </div>
+          </div>
+          <div className="flex flex-wrap gap-2 justify-center">
             {questions.map((_, index) => (
               <button
                 key={index}
-                className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                className={`w-10 h-10 rounded-lg flex items-center justify-center transition-all transform ${
                   index === currentQuestionIndex
-                    ? 'bg-blue-500 text-white'
+                    ? 'bg-[#1A2B5F] text-white shadow-lg scale-110 font-bold ring-2 ring-offset-2 ring-[#1A2B5F]'
                     : selectedOptions[questions[index].id]
                     ? 'bg-green-500 text-white'
-                    : 'bg-gray-200'
+                    : 'bg-yellow-100 text-yellow-800 border border-yellow-300 hover:bg-yellow-200'
                 }`}
                 onClick={() => setCurrentQuestionIndex(index)}
               >

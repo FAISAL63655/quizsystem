@@ -1,8 +1,8 @@
 import { createClient } from '@supabase/supabase-js';
 
 // Provide default values for Supabase URL and key
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://aimzresxqchycswspxnj.supabase.co';
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFpbXpyZXN4cWNoeWNzd3NweG5qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDU0OTczNTcsImV4cCI6MjA2MTA3MzM1N30.SeC3DrDrMTN0-jg5OZTbRmVb_4ecIgvThZlcfqedvOE';
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://tqzjofrzsawtjfowtrtn.supabase.co';
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxempvZnJ6c2F3dGpmb3d0cnRuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDYzMDkzNTEsImV4cCI6MjA2MTg4NTM1MX0.sK6V8pKh7L1uHa6q1tc7bQdmLvulSptGNu9eG_MRWQQ';
 
 // Check if URL and key are defined
 if (!supabaseUrl || !supabaseAnonKey) {

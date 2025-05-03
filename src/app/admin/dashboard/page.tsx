@@ -197,7 +197,13 @@ export default function AdminDashboard() {
                       الوصف
                     </th>
                     <th scope="col" className="px-6 py-3 text-right text-sm font-medium text-[#64748B]">
-                      تاريخ الإنشاء
+                      وقت البدء
+                    </th>
+                    <th scope="col" className="px-6 py-3 text-right text-sm font-medium text-[#64748B]">
+                      وقت الانتهاء
+                    </th>
+                    <th scope="col" className="px-6 py-3 text-right text-sm font-medium text-[#64748B]">
+                      الحالة
                     </th>
                     <th scope="col" className="px-6 py-3 text-right text-sm font-medium text-[#64748B]">
                       الإجراءات
@@ -205,50 +211,79 @@ export default function AdminDashboard() {
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-[#E2E8F0]">
-                  {quizzes.map((quiz) => (
-                    <tr key={quiz.id} className="hover:bg-[#F8FAFC] transition-colors">
-                      <td className="px-6 py-3.5">
-                        <div className="text-sm font-medium text-[#000000]">
-                          {quiz.title}
-                        </div>
-                      </td>
-                      <td className="px-6 py-3.5">
-                        <div className="text-sm text-[#64748B]">
-                          {quiz.description || '-'}
-                        </div>
-                      </td>
-                      <td className="px-6 py-3.5">
-                        <div className="text-sm text-[#64748B]">
-                          {new Date(quiz.created_at).toLocaleDateString('ar-SA')}
-                        </div>
-                      </td>
-                      <td className="px-6 py-3.5 text-sm font-medium">
-                        <div className="flex flex-wrap gap-2 justify-end">
-                          <Link href={`/admin/quizzes/${quiz.id}/edit`}>
-                            <Button variant="secondary" className="text-xs py-1.5 px-3">
-                              تعديل
-                            </Button>
-                          </Link>
-                          <Link href={`/admin/quizzes/${quiz.id}/questions`}>
-                            <Button variant="secondary" className="text-xs py-1.5 px-3">
-                              الأسئلة
-                            </Button>
-                          </Link>
-                          <Link href={`/quizzes/${quiz.id}/leaderboard`}>
-                            <Button variant="secondary" className="text-xs py-1.5 px-3">
-                              المتصدرين
-                            </Button>
-                          </Link>
-                          <button
-                            onClick={() => handleDeleteQuiz(quiz.id)}
-                            className="text-xs py-1.5 px-3 bg-[#EF4444] text-white rounded-md hover:bg-[#DC2626] transition-colors"
-                          >
-                            حذف
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
+                  {quizzes.map((quiz) => {
+                    // التحقق من وقت البدء والانتهاء
+                    const now = new Date();
+                    const startTime = quiz.start_time ? new Date(quiz.start_time) : null;
+                    const endTime = quiz.end_time ? new Date(quiz.end_time) : null;
+
+                    // حالة الاختبار (قادم، متاح، منتهي)
+                    let quizStatus = 'متاح';
+                    let statusColor = 'text-green-600';
+
+                    if (startTime && now < startTime) {
+                      quizStatus = 'قادم';
+                      statusColor = 'text-blue-600';
+                    } else if (endTime && now > endTime) {
+                      quizStatus = 'منتهي';
+                      statusColor = 'text-red-600';
+                    }
+
+                    return (
+                      <tr key={quiz.id} className="hover:bg-[#F8FAFC] transition-colors">
+                        <td className="px-6 py-3.5">
+                          <div className="text-sm font-medium text-[#000000]">
+                            {quiz.title}
+                          </div>
+                        </td>
+                        <td className="px-6 py-3.5">
+                          <div className="text-sm text-[#64748B]">
+                            {quiz.description || '-'}
+                          </div>
+                        </td>
+                        <td className="px-6 py-3.5">
+                          <div className="text-sm text-[#64748B]">
+                            {startTime ? startTime.toLocaleString('ar-SA') : '-'}
+                          </div>
+                        </td>
+                        <td className="px-6 py-3.5">
+                          <div className="text-sm text-[#64748B]">
+                            {endTime ? endTime.toLocaleString('ar-SA') : '-'}
+                          </div>
+                        </td>
+                        <td className="px-6 py-3.5">
+                          <div className={`text-sm font-medium ${statusColor}`}>
+                            {quizStatus}
+                          </div>
+                        </td>
+                        <td className="px-6 py-3.5 text-sm font-medium">
+                          <div className="flex flex-wrap gap-2 justify-end">
+                            <Link href={`/admin/quizzes/${quiz.id}/edit`}>
+                              <Button variant="secondary" className="text-xs py-1.5 px-3">
+                                تعديل
+                              </Button>
+                            </Link>
+                            <Link href={`/admin/quizzes/${quiz.id}/questions`}>
+                              <Button variant="secondary" className="text-xs py-1.5 px-3">
+                                الأسئلة
+                              </Button>
+                            </Link>
+                            <Link href={`/quizzes/${quiz.id}/leaderboard`}>
+                              <Button variant="secondary" className="text-xs py-1.5 px-3">
+                                المتصدرين
+                              </Button>
+                            </Link>
+                            <button
+                              onClick={() => handleDeleteQuiz(quiz.id)}
+                              className="text-xs py-1.5 px-3 bg-[#EF4444] text-white rounded-md hover:bg-[#DC2626] transition-colors"
+                            >
+                              حذف
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>

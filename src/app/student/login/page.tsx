@@ -51,9 +51,9 @@ export default function StudentLogin() {
     <div dir="rtl" className="min-h-screen bg-gray-50">
       <Header title="مسابقات المدرسة الإلكترونية" />
 
-      <div className="container mx-auto px-4 py-12">
-        <div className="max-w-md mx-auto">
-          <Card className="p-8">
+      <div className="container mx-auto px-4 py-12 flex items-center justify-center min-h-[80vh]">
+        <div className="w-full max-w-md">
+          <Card className="p-8 shadow-lg">
             <h1 className="text-2xl font-bold mb-6 text-center">تسجيل دخول الطالب</h1>
 
             {error && (
@@ -88,15 +88,18 @@ export default function StudentLogin() {
 
               <Button
                 type="submit"
-                className="w-full mt-4"
+                className="w-full mt-6 py-3 text-lg font-medium transition-all duration-200 transform hover:scale-[1.02]"
                 disabled={loading}
               >
                 {loading ? 'جاري تسجيل الدخول...' : 'تسجيل الدخول'}
               </Button>
             </form>
 
-            <div className="mt-6 text-center">
-              <Link href="/" className="text-blue-600 hover:underline">
+            <div className="mt-8 text-center">
+              <Link href="/" className="text-blue-600 hover:text-blue-800 transition-colors duration-200 flex items-center justify-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
                 العودة إلى الصفحة الرئيسية
               </Link>
             </div>

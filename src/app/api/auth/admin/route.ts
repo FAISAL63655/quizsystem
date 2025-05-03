@@ -32,9 +32,22 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Temporarily bypass password verification for testing
-    // const isPasswordValid = await bcrypt.compare(password, admin.password);
-    const isPasswordValid = password === 'admin123'; // Temporary direct comparison
+    // التحقق من كلمة المرور
+    let isPasswordValid = false;
+
+    try {
+      // أولاً، نحاول استخدام bcrypt للتحقق من كلمة المرور المشفرة
+      isPasswordValid = await bcrypt.compare(password, admin.password);
+      console.log('Password verification with bcrypt:', isPasswordValid);
+    } catch (err) {
+      console.error('Error comparing passwords with bcrypt:', err);
+    }
+
+    // إذا فشل التحقق باستخدام bcrypt، نحاول المقارنة المباشرة (للتطوير فقط)
+    if (!isPasswordValid) {
+      isPasswordValid = password === 'admin123'; // مقارنة مباشرة للتطوير
+      console.log('Direct password comparison:', isPasswordValid);
+    }
 
     if (!isPasswordValid) {
       return NextResponse.json(

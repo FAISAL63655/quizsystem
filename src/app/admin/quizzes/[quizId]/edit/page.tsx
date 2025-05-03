@@ -10,6 +10,40 @@ import Header from '@/components/Header';
 import { Quiz } from '@/types';
 import { use } from 'react';
 
+// وظيفة لتحويل روابط يوتيوب إلى صيغة التضمين
+const formatYouTubeUrl = (url: string): string => {
+  try {
+    if (!url) return '';
+
+    // التعامل مع روابط youtube.com/watch?v=
+    if (url.includes('youtube.com/watch?v=')) {
+      const videoId = new URL(url).searchParams.get('v');
+      if (videoId) {
+        return `https://www.youtube.com/embed/${videoId}`;
+      }
+    }
+
+    // التعامل مع روابط youtu.be/
+    if (url.includes('youtu.be/')) {
+      const videoId = url.split('youtu.be/')[1]?.split('?')[0];
+      if (videoId) {
+        return `https://www.youtube.com/embed/${videoId}`;
+      }
+    }
+
+    // إذا كان الرابط بالفعل بصيغة التضمين
+    if (url.includes('youtube.com/embed/')) {
+      return url;
+    }
+
+    // إذا لم يتم التعرف على صيغة الرابط، نعيد الرابط كما هو
+    return url;
+  } catch (error) {
+    console.error('Error formatting YouTube URL:', error);
+    return url || '';
+  }
+};
+
 export default function EditQuiz({ params }: { params: { quizId: string } }) {
   const router = useRouter();
   const unwrappedParams = use(params);
@@ -182,13 +216,34 @@ export default function EditQuiz({ params }: { params: { quizId: string } }) {
               />
             </div>
 
-            <Input
-              id="videoUrl"
-              label="رابط الفيديو"
-              value={videoUrl}
-              onChange={(e) => setVideoUrl(e.target.value)}
-              placeholder="أدخل رابط الفيديو (اختياري)"
-            />
+            <div className="mb-4">
+              <label htmlFor="videoUrl" className="block text-sm font-medium text-gray-700 mb-1">
+                رابط الفيديو
+              </label>
+              <input
+                id="videoUrl"
+                type="text"
+                value={videoUrl}
+                onChange={(e) => setVideoUrl(e.target.value)}
+                placeholder="أدخل رابط الفيديو (اختياري)"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+              />
+
+              {videoUrl && (
+                <div className="mt-4">
+                  <h3 className="text-sm font-medium text-gray-700 mb-2">معاينة الفيديو:</h3>
+                  <div className="relative" style={{ paddingBottom: '56.25%', height: 0, overflow: 'hidden' }}>
+                    <iframe
+                      src={formatYouTubeUrl(videoUrl)}
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                      className="absolute top-0 left-0 w-full h-full"
+                      referrerPolicy="strict-origin-when-cross-origin"
+                    ></iframe>
+                  </div>
+                </div>
+              )}
+            </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
               <Input

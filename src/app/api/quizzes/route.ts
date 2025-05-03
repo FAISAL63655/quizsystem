@@ -38,24 +38,38 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // تحضير البيانات للإدخال
+    const quizData = {
+      title,
+      description: description || null,
+      video_url: video_url || null,
+      start_time: start_time || null,
+      end_time: end_time || null
+    };
+
+    console.log('Attempting to create quiz with data:', JSON.stringify(quizData));
+
+    // محاولة إنشاء الاختبار
     const { data: quiz, error } = await supabase
       .from('quizzes')
-      .insert([{ title, description, video_url, start_time, end_time }])
+      .insert([quizData])
       .select()
       .single();
 
     if (error) {
+      console.error('Supabase error creating quiz:', error);
       return NextResponse.json(
-        { error: 'Error creating quiz' },
+        { error: `Error creating quiz: ${error.message}`, details: error },
         { status: 500 }
       );
     }
 
+    console.log('Quiz created successfully:', quiz);
     return NextResponse.json({ quiz }, { status: 201 });
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error creating quiz:', error);
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { error: `Internal server error: ${error.message}` },
       { status: 500 }
     );
   }

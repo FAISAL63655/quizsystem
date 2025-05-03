@@ -25,6 +25,39 @@ export async function POST(
       );
     }
 
+    // Get the quiz to check start and end times
+    const { data: quiz, error: quizError } = await supabase
+      .from('quizzes')
+      .select('*')
+      .eq('id', quizId)
+      .single();
+
+    if (quizError) {
+      return NextResponse.json(
+        { error: 'Quiz not found' },
+        { status: 404 }
+      );
+    }
+
+    // Check if quiz is available based on start and end times
+    const now = new Date();
+    const startTime = quiz.start_time ? new Date(quiz.start_time) : null;
+    const endTime = quiz.end_time ? new Date(quiz.end_time) : null;
+
+    if (startTime && now < startTime) {
+      return NextResponse.json(
+        { error: 'Quiz has not started yet' },
+        { status: 403 }
+      );
+    }
+
+    if (endTime && now > endTime) {
+      return NextResponse.json(
+        { error: 'Quiz has ended' },
+        { status: 403 }
+      );
+    }
+
     // Get the question to check the correct answer
     const { data: question, error: questionError } = await supabase
       .from('questions')

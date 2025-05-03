@@ -89,22 +89,70 @@ export default function StudentQuizzes() {
           </Card>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {quizzes.map((quiz) => (
-              <Card key={quiz.id} className="p-6">
-                <h2 className="text-xl font-bold mb-2">{quiz.title}</h2>
-                {quiz.description && (
-                  <p className="text-gray-600 mb-4">{quiz.description}</p>
-                )}
-                <div className="flex justify-between items-center mt-4">
-                  <Link href={`/student/quizzes/${quiz.id}`}>
-                    <Button>بدء الاختبار</Button>
-                  </Link>
-                  <Link href={`/quizzes/${quiz.id}/leaderboard`} className="text-blue-600 hover:underline">
-                    عرض لوحة المتصدرين
-                  </Link>
-                </div>
-              </Card>
-            ))}
+            {quizzes.map((quiz) => {
+              // التحقق من وقت البدء والانتهاء
+              const now = new Date();
+              const startTime = quiz.start_time ? new Date(quiz.start_time) : null;
+              const endTime = quiz.end_time ? new Date(quiz.end_time) : null;
+
+              // حالة الاختبار (قادم، متاح، منتهي)
+              let quizStatus = 'متاح';
+              let isAvailable = true;
+
+              if (startTime && now < startTime) {
+                quizStatus = 'قادم';
+                isAvailable = false;
+              } else if (endTime && now > endTime) {
+                quizStatus = 'منتهي';
+                isAvailable = false;
+              }
+
+              return (
+                <Card key={quiz.id} className="p-6">
+                  <h2 className="text-xl font-bold mb-2">{quiz.title}</h2>
+                  {quiz.description && (
+                    <p className="text-gray-600 mb-4">{quiz.description}</p>
+                  )}
+
+                  {/* عرض وقت البدء والانتهاء إذا كانا موجودين */}
+                  <div className="text-sm text-gray-500 mb-4">
+                    {startTime && (
+                      <div className="mb-1">
+                        <span className="font-semibold">وقت البدء:</span> {startTime.toLocaleString('ar-SA')}
+                      </div>
+                    )}
+                    {endTime && (
+                      <div>
+                        <span className="font-semibold">وقت الانتهاء:</span> {endTime.toLocaleString('ar-SA')}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* عرض حالة الاختبار */}
+                  <div className={`text-sm mb-4 font-semibold ${
+                    quizStatus === 'متاح' ? 'text-green-600' :
+                    quizStatus === 'قادم' ? 'text-blue-600' : 'text-red-600'
+                  }`}>
+                    الحالة: {quizStatus}
+                  </div>
+
+                  <div className="flex justify-between items-center mt-4">
+                    {isAvailable ? (
+                      <Link href={`/student/quizzes/${quiz.id}`}>
+                        <Button>بدء الاختبار</Button>
+                      </Link>
+                    ) : (
+                      <Button disabled={true} className="opacity-50 cursor-not-allowed">
+                        {quizStatus === 'قادم' ? 'لم يبدأ بعد' : 'انتهى الاختبار'}
+                      </Button>
+                    )}
+                    <Link href={`/student/quizzes/${quiz.id}/leaderboard`} className="text-blue-600 hover:underline">
+                      عرض لوحة المتصدرين
+                    </Link>
+                  </div>
+                </Card>
+              );
+            })}
           </div>
         )}
       </div>
